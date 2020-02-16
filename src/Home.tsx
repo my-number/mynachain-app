@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button } from 'grommet';
+import { Button } from '@material-ui/core';
 import { useApi } from './Api';
 import { useHistory } from 'react-router-dom'
 export default function Home() {
@@ -27,10 +27,7 @@ export default function Home() {
         <li>アップロードされた証明書を表示します。</li>
       </ol>
       <p>このブロックチェーンはParity Substrateで構築されています</p>
-      <Button
-        label="Edit"
-        onClick={() => history.push("/AddCert")}
-      />
+      <Button  variant="contained" color="primary" onClick={() => history.push("/AddCert")}>Go to next</Button>
     </section>
   )
 }
