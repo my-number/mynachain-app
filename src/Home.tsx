@@ -27,7 +27,7 @@ export default function Home() {
         <li>アップロードされた証明書を表示します。</li>
       </ol>
       <p>このブロックチェーンはParity Substrateで構築されています</p>
-      <Button  variant="contained" color="primary" onClick={() => history.push("/AddCert")}>Go to next</Button>
+      <Button variant="contained" color="primary" onClick={() => history.push("/newaccount")}>Go to next</Button>
     </section>
   )
 }
