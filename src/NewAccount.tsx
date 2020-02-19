@@ -17,19 +17,27 @@ export default function NewAccount() {
 
   const useHexInput = (initial: string) => {
     const [value, set] = useState(initial);
-    let isHex = /^([a-fA-F0-9]{2})*$/.test(value);
+    let isHex = /^0x([a-fA-F0-9]{2})*$/.test(value);
 
-    return { value, onChange: (e: any) => set(e.target.value), error: !isHex }
+    return { value, onChange: (e: any) => set(e.target.value), error: !isHex}
   }
   const cert = useHexInput("");
   const sig = useHexInput("");
   const [log, setLog] = useState("");
   const create = () => {
+    setLog("")
     try {
-      const submittable = api.tx.mynaChainModule.createAccount(
-        Buffer.from(cert.value, "hex"),
-        Buffer.from(sig.value, "hex")
-      );
+      const submittable = api.tx.mynaChainModule.go({
+        signature: sig.value,
+        id: 0,
+        tbs: {
+          CreateAccount: {
+            cert: cert.value,
+            nonce: 0
+          }
+        }
+      });
+      debugger
     } catch (e) {
       setLog(e.toString());
     }
@@ -39,7 +47,7 @@ export default function NewAccount() {
       <TextField
         label="証明書"
         fullWidth={true}
-        placeholder="16進数で"
+        placeholder="0x......"
         multiline
         {...cert}
       />
@@ -47,7 +55,7 @@ export default function NewAccount() {
 
         label="署名"
         fullWidth={true}
-        placeholder="16進数で"
+        placeholder="0x......"
         multiline
         {...sig}
       />
