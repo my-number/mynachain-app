@@ -23,7 +23,7 @@ export default function Api({
 
   useEffect((): void => {
     const provider = new WsProvider(
-      "ws://127.0.0.1:9944"
+      "ws://ec2-107-23-127-221.compute-1.amazonaws.com:9944"
     );
     api = new ApiPromise({
       provider,
@@ -36,9 +36,9 @@ export default function Api({
         },
         "types::Balance": "u64",
         "types::SignedData": {
+          "tbs": "Tx",
           "signature": "types::Signature",
-          "id": "types::AccountId",
-          "tbs": "Tx"
+          "id": "types::AccountId"
         },
         "types::Signature": "Vec<u8>",
         "Tx": {
