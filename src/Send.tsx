@@ -3,7 +3,8 @@ import { Button, Container, TextField } from '@material-ui/core';
 import { useApi } from './Api';
 import { makeStyles } from '@material-ui/core/styles';
 import { Keyring } from '@polkadot/api';
-
+import { useToasts } from 'react-toast-notifications'
+import { currentCard } from './rpc'
 const keyring = new Keyring({ type: 'sr25519' });
 const useStyles = makeStyles({
   root: {
@@ -12,17 +13,15 @@ const useStyles = makeStyles({
     }
   }
 })
-
-export default function NewAccount() {
+const i2h = (il: number[]) => (
+  "0x" + il.map(i => ("0" + i.toString(16)).slice(-2)).join("")
+)
+export default function Send() {
   const { api } = useApi();
   const { root } = useStyles();
+  const { addToast } = useToasts();
+  const [loading, setLoading] = useState(false);
 
-  const useHexInput = (initial: string) => {
-    const [value, set] = useState(initial);
-    let isHex = /^0x([a-fA-F0-9]{2})*$/.test(value);
-
-    return { value, onChange: (e: any) => set(e.target.value), error: !isHex }
-  }
   const useIntInput = (initial: number) => {
     const [value, set] = useState(initial);
     let isNumber = /^[0-9]*$/.test(value.toString());
@@ -30,16 +29,17 @@ export default function NewAccount() {
     return { value, onChange: (e: any) => set(e.target.value), error: !isNumber }
   }
 
-  const sig = useHexInput("");
-  const to = useIntInput(0);
+
   const from = useIntInput(0);
+  const to = useIntInput(0);
   const amount = useIntInput(0);
   const [log, setLog] = useState("");
   const [hash, setHash] = useState("");
-  const getHash = () => {
-    setLog("")
+
+  const send = async () => {
+    setLoading(true)
     try {
-      const submittable: any = api.tx.mynaChainModule.go({
+      const forHash: any = api.tx.mynaChainModule.go({
         signature: "0x00",
         id: from.value,
         tbs: {
@@ -50,16 +50,15 @@ export default function NewAccount() {
           }
         }
       });
-      setHash(submittable.args[0]["tbs"].hash.toHex())
-    } catch (e) {
-      setLog(e.toString());
-    }
-  }
-  const send = () => {
-    setLog("")
-    try {
-      const submittable: any = api.tx.mynaChainModule.go({
-        signature: sig.value,
+
+      let hash = forHash.args[0]["tbs"].hash.toHex()
+      addToast("Computing a signature", {
+        appearance: 'info',
+        autoDismiss: true,
+      })
+      const sig = await currentCard.computeSig("1919", hash.slice(2)) as number[]
+      const submittable = api.tx.mynaChainModule.go({
+        signature: i2h(sig),
         id: from.value,
         tbs: {
           Send: {
@@ -69,18 +68,30 @@ export default function NewAccount() {
           }
         }
       });
-      setHash("")
       const alice = keyring.addFromUri('//Alice', { name: 'Alice default' });
-      submittable.signAndSend(alice, (e: any) => {
+      addToast("Waiting for the Events", {
+        appearance: 'info',
+        autoDismiss: true,
+      })
+      submittable.signAndSend(alice, (e) => {
         console.log(e);
+        if (e.isCompleted) setLoading(false)
         if (e.events.length == 0) return;
         e.events.forEach((m: any) => {
-          const msg = m.event.meta.documentation[0].toString();
-          setLog(msg);
+          const msg = m.event.meta.name.toString();
+          addToast(msg, {
+            appearance: 'success',
+            autoDismiss: true,
+          });
         });
       })
+
     } catch (e) {
-      setLog(e.toString());
+      addToast(e.toString(), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      setLoading(false)
     }
   }
   return (
@@ -98,7 +109,7 @@ export default function NewAccount() {
         {...to}
       />
       <TextField
-        label="送る数量"
+        label="発行数量"
         fullWidth={true}
         placeholder="整数"
         {...amount}
@@ -107,40 +118,10 @@ export default function NewAccount() {
         variant="contained"
         color="primary"
         fullWidth={true}
-        onClick={getHash}
-        disabled={from.error || to.error || amount.error}
-      >カードに渡すハッシュ値を作成</Button>
-      <TextField
-
-        label="カードに渡すハッシュ値"
-        fullWidth={true}
-        placeholder="0x......"
-        multiline
-        value={hash}
-      />
-
-      <TextField
-
-        label="署名"
-        fullWidth={true}
-        placeholder="0x......"
-        multiline
-        {...sig}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth={true}
         onClick={send}
-        disabled={sig.error}
-      >トランザクション送信</Button>
-      <TextField
-        label="ログ"
-        fullWidth={true}
-        multiline
-        disabled
-        value={log}
-      />
+        disabled={from.error || amount.error}
+      >発行</Button>
+
     </Container>
   )
 }
