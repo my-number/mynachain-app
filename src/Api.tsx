@@ -23,8 +23,8 @@ export default function Api({
 
   useEffect((): void => {
     const provider = new WsProvider(
-      "ws://ec2-54-196-193-37.compute-1.amazonaws.com:9944"
-      //"ws://ec2-107-23-127-221.compute-1.amazonaws.com:9944"
+      //"ws://ec2-54-196-193-37.compute-1.amazonaws.com:9944"
+      "ws://ec2-107-23-127-221.compute-1.amazonaws.com:9944"
     );
     api = new ApiPromise({
       provider,
