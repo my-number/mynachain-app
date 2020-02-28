@@ -45,6 +45,11 @@ export default function Home() {
   useEffect(() => {
     getReaders().then(r => {
       setReaders(r);
+    }, e => {
+      addToast(`Daemon is not started.`, {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     })
   }, []);
   return (
@@ -80,7 +85,7 @@ export default function Home() {
           Explore / Inspect
         </ListSubheader>
       }>
-        <ListItem button onClick={() => history.push("/detail")}>Check account detail</ListItem>
+        <ListItem button>Under Construction</ListItem>
 
       </List>
       <Divider />
