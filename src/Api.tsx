@@ -22,48 +22,45 @@ export default function Api({
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect((): void => {
-    const provider = new WsProvider(
-      //"ws://ec2-54-196-193-37.compute-1.amazonaws.com:9944"
-      "ws://ec2-107-23-127-221.compute-1.amazonaws.com:9944"
-    );
+    const provider = new WsProvider("wss://d2n5lppwwxg9vj.cloudfront.net");
     api = new ApiPromise({
       provider,
       types: {
         "types::AccountId": "u64",
         "types::Account": {
-          "cert": "Vec<u8>",
-          "id": "types::AccountId",
-          "nonce": "u64"
+          cert: "Vec<u8>",
+          id: "types::AccountId",
+          nonce: "u64"
         },
         "types::Balance": "u64",
         "types::SignedData": {
-          "tbs": "Tx",
-          "signature": "types::Signature",
-          "id": "types::AccountId"
+          tbs: "Tx",
+          signature: "types::Signature",
+          id: "types::AccountId"
         },
         "types::Signature": "Vec<u8>",
-        "Tx": {
-          "_enum": {
-            "CreateAccount": "TxCreateAccount",
-            "Send": "TxSend",
-            "Mint": "TxMint",
-            "Other": null
+        Tx: {
+          _enum: {
+            CreateAccount: "TxCreateAccount",
+            Send: "TxSend",
+            Mint: "TxMint",
+            Other: null
           }
         },
-        "TxCreateAccount": {
-          "cert": "Vec<u8>",
-          "nonce": "uNonce"
+        TxCreateAccount: {
+          cert: "Vec<u8>",
+          nonce: "uNonce"
         },
-        "TxSend": {
-          "to": "types::AccountId",
-          "amount": "types::Balance",
-          "nonce": "uNonce"
+        TxSend: {
+          to: "types::AccountId",
+          amount: "types::Balance",
+          nonce: "uNonce"
         },
-        "TxMint": {
-          "amount": "types::Balance",
-          "nonce": "uNonce"
+        TxMint: {
+          amount: "types::Balance",
+          nonce: "uNonce"
         },
-        "uNonce": "u64"
+        uNonce: "u64"
       }
     });
 

@@ -1,38 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Container, TextField } from '@material-ui/core';
-import { useApi } from './Api';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect } from "react";
+import { Button, Container, TextField } from "@material-ui/core";
+import { useApi } from "./Api";
+import { makeStyles } from "@material-ui/core/styles";
 import { useParams } from "react-router-dom";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 const useStyles = makeStyles({
   root: {
     "& > *": {
       margin: "10px"
     }
   }
-})
+});
 
 export default function Detail() {
-  const { root } = useStyles()
-  const { id } = useParams()
-  const { api } = useApi()
-  const [balance, setBalance] = useState<number | null>(null)
-  const [nonce, setNonce] = useState<number | null>(null)
-  const [cert, setCert] = useState<string>("Not loaded")
+  const { root } = useStyles();
+  const { id } = useParams();
+  const { api } = useApi();
+  const [balance, setBalance] = useState<number | null>(null);
+  const [nonce, setNonce] = useState<number | null>(null);
+  const [cert, setCert] = useState<string>("Not loaded");
   useEffect(() => {
     api.query.mynaChainModule.balance(id).then((res: any) => {
-      setBalance(res.toNumber())
-    })
+      setBalance(res.toNumber());
+    });
     api.query.mynaChainModule.accounts(id).then((res: any) => {
-      setNonce(res.nonce.toNumber())
-      setCert(res.cert.toHex())
-    })
-
-  }, [id])
+      setNonce(res.nonce.toNumber());
+      setCert(res.cert.toHex());
+    });
+  }, [id]);
+  const x509 = () => {
+    window.open("https://lapo.it/asn1js/#" + cert.slice(2));
+  };
   return (
     <Container maxWidth="sm" className={root}>
       <h1>Account ID: {id}</h1>
       <p>
-        Balance: {balance || "not loaded"}<br />
+        Balance: {balance || "not loaded"}
+        <br />
         Nonce: {nonce || "not loaded"}
       </p>
       <TextField
@@ -42,8 +46,16 @@ export default function Detail() {
         disabled
         variant="filled"
         fullWidth
-        value={cert} />
+        value={cert}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<ArrowForwardIcon />}
+        onClick={x509}
+      >
+        証明書の中身を確認する
+      </Button>
     </Container>
   );
-
 }
