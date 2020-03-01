@@ -35,12 +35,11 @@ export default function Detail() {
     <Container maxWidth="sm" className={root}>
       <h1>Account ID: {id}</h1>
       <p>
-        Balance: {balance || "not loaded"}
-        <br />
-        Nonce: {nonce || "not loaded"}
+        アカウント{id}が所有する金額:{" "}
+        {balance + " マイナコイン" || "not loaded"}
       </p>
       <TextField
-        label="Certificate"
+        label="証明書"
         multiline
         rows="6"
         disabled

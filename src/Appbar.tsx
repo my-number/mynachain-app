@@ -46,7 +46,7 @@ export default function Appbar() {
             history.push("/");
           }}
         >
-          Mynachain
+          マイナチェーン
         </Typography>
         <div className={classes.grow} />
         <form onSubmit={search} className={classes.form}>
@@ -59,7 +59,7 @@ export default function Appbar() {
               setId(parseInt(e.target.value));
             }}
             id="standard-basic"
-            placeholder="アカウントID"
+            placeholder="アカウントIDで検索"
           />
         </form>
       </Toolbar>

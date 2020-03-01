@@ -69,11 +69,11 @@ export default function Home() {
   }, []);
   return (
     <Container>
-      <h1>Mynachain</h1>
+      <h1>マイナンバーチェーン</h1>
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Available reader
+            利用可能なカードリーダー
           </ListSubheader>
         }
       >
@@ -101,13 +101,13 @@ export default function Home() {
         }
       >
         <ListItem button onClick={() => history.push("/newaccount")}>
-          Create a new account
+          新しいアカウントを作成
         </ListItem>
         <ListItem button onClick={() => history.push("/mint")}>
-          Mint
+          残高を発行
         </ListItem>
         <ListItem button onClick={() => history.push("/Send")}>
-          Send
+          送金
         </ListItem>
       </List>
       <Divider />
@@ -124,12 +124,12 @@ export default function Home() {
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Debug
+            デバッグ
           </ListSubheader>
         }
       >
         <ListItem button onClick={() => getCardStatus()}>
-          Get card status
+          カードステータスを取得
         </ListItem>
       </List>
     </Container>
