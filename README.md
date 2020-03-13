@@ -2,6 +2,9 @@
 
 [Mynachain](https://github.com/my-number/mynachain) client that uses `polkadot-js`
 
+![トップページ](public/ss-index.png)
+![送信ページ](public/ss-send.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
