@@ -1,9 +1,12 @@
-import axios from 'axios'
+import axios from "axios";
 
 let id = 0;
 
-export default async function call<T = any>(method: string, params: any = null): Promise<T> {
-  id++
+export default async function call<T = any>(
+  method: string,
+  params: any = null
+): Promise<T> {
+  id++;
   const result = await axios({
     method: "post",
     url: "http://localhost:3030",
@@ -14,11 +17,11 @@ export default async function call<T = any>(method: string, params: any = null):
       method,
       params
     }
-  })
+  });
   if (result.data.error) {
-    throw new Error(result.data.error.message)
+    throw new Error(result.data.error.message);
   }
-  return result.data.result
+  return result.data.result;
 }
 
 export class Reader {
@@ -28,27 +31,29 @@ export class Reader {
   }
   async open(): Promise<Card> {
     const result = await call<number>("openReader", [this.name]);
-    return new Card(result)
+    return new Card(result);
   }
 }
 export class Card {
   fd: number;
   constructor(fd: number) {
-    this.fd = fd
+    this.fd = fd;
   }
 
   async getStatus(): Promise<any> {
-    if (this.fd < 0) throw new Error("Card not selected")
-    const result = await call<{ name: string[], atr: any }>("getStatus", [this.fd]);
-    return result
+    if (this.fd < 0) throw new Error("Card not selected");
+    const result = await call<{ name: string[]; atr: any }>("getStatus", [
+      this.fd
+    ]);
+    return result;
   }
   async getCert(): Promise<any> {
-    if (this.fd < 0) throw new Error("Card not selected")
+    if (this.fd < 0) throw new Error("Card not selected");
     const result = await call<{ cert: string }>("getCert", [this.fd]);
-    return result.cert
+    return result.cert;
   }
   async computeSig(pin: string, hashHex: string): Promise<any> {
-    if (this.fd < 0) throw new Error("Card not selected")
+    if (this.fd < 0) throw new Error("Card not selected");
 
     /*
     let em = Buffer.allocUnsafe(128).fill(0xff) // 0xff-initialized buffer that is as long as pubkey
@@ -62,18 +67,22 @@ export class Card {
     */
 
     // only SHA256 hash is accepted
-    const result = await call<{ sig: string }>("computeSig", [this.fd, pin, "3031300d060960864801650304020105000420" + hashHex]);
-    return result.sig
+    const result = await call<{ sig: string }>("computeSig", [
+      this.fd,
+      pin,
+      "3031300d060960864801650304020105000420" + hashHex
+    ]);
+    return result.sig;
   }
   async reconnect(): Promise<null> {
-    if (this.fd < 0) throw new Error("Card not selected")
+    if (this.fd < 0) throw new Error("Card not selected");
     await call("reconnect", [this.fd]);
-    return null
+    return null;
   }
 }
 export async function getReaders(): Promise<Reader[]> {
   const result = await call<string[]>("getReaders");
-  return result.map(r => new Reader(r))
+  return result.map(r => new Reader(r));
 }
 
 let currentCard: Card = new Card(-1);
