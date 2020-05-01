@@ -22,7 +22,10 @@ export default function Api({
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect((): void => {
-    const provider = new WsProvider("wss://d2n5lppwwxg9vj.cloudfront.net");
+    const provider = new WsProvider(
+      localStorage.destination ||
+        "ws://ec2-3-87-10-167.compute-1.amazonaws.com:9944"
+    );
     api = new ApiPromise({
       provider,
       types: {
