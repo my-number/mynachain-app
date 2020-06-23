@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, InputBase } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  InputBase,
+  IconButton
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { useApi } from "./Api";
 const useStyles = makeStyles({
   form: {
     backgroundColor: "rgba(255,255,255,0.1)",
@@ -32,6 +40,8 @@ export default function Appbar() {
   const classes = useStyles();
   const history = useHistory();
   const [id, setId] = useState(0);
+
+  const { isReady } = useApi();
   const search = (e: any) => {
     e.preventDefault();
     history.push("/detail/" + id);
@@ -49,19 +59,30 @@ export default function Appbar() {
           マイナチェーン
         </Typography>
         <div className={classes.grow} />
-        <form onSubmit={search} className={classes.form}>
-          <div className={classes.icon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            className={classes.input}
-            onChange={e => {
-              setId(parseInt(e.target.value));
-            }}
-            id="standard-basic"
-            placeholder="アカウントIDで検索"
-          />
-        </form>
+
+        {isReady && (
+          <form onSubmit={search} className={classes.form}>
+            <div className={classes.icon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              className={classes.input}
+              onChange={e => {
+                setId(parseInt(e.target.value));
+              }}
+              id="standard-basic"
+              placeholder="アカウントIDで検索"
+            />
+          </form>
+        )}
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="menu"
+          onClick={() => history.push("/settings")}
+        >
+          <SettingsIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

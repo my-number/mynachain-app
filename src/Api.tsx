@@ -23,7 +23,7 @@ export default function Api({
 
   useEffect((): void => {
     const provider = new WsProvider(
-      localStorage.destination || "wss://d2xzrplr2rvva4.cloudfront.net"
+      localStorage.destination || "wss://d1pzlh6wq0egn8.cloudfront.net"
     );
     api = new ApiPromise({
       provider,
