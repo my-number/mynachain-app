@@ -29,7 +29,7 @@ export default function Settings() {
   };
   const node = useInput(localStorage.destination || "");
   const save = () => {
-    if (!/^(wss|ws):\/\//.test(node.value)) return;
+    if (!/^(wss|ws):\/\//.test(node.value) && node.value != "") return;
     setLoading(true);
     localStorage.destination = node.value;
     history.replace("/");
