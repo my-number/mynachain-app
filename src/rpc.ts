@@ -54,7 +54,7 @@ export class Card {
   }
   async computeSig(pin: string, hashHex: string): Promise<any> {
     if (this.fd < 0) throw new Error("Card not selected");
-
+    if (!pin || pin.length == 0) throw new Error("Please Provide PIN");
     /*
     let em = Buffer.allocUnsafe(128).fill(0xff) // 0xff-initialized buffer that is as long as pubkey
     // EM = 0x00 || 0x01 || PS || 0x00 || T

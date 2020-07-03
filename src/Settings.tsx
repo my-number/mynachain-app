@@ -23,15 +23,17 @@ export default function Settings() {
 
     return {
       value,
-      onChange: (e: any) => set(e.target.value),
-      error: !/^(wss|ws):\/\//.test(value) && value != ""
+      onChange: (e: any) => set(e.target.value)
     };
   };
   const node = useInput(localStorage.destination || "");
+  const pin = useInput(localStorage.pin || "");
   const save = () => {
     if (!/^(wss|ws):\/\//.test(node.value) && node.value != "") return;
+    if (!/^\d{4}$/.test(pin.value)) return;
     setLoading(true);
     localStorage.destination = node.value;
+    localStorage.pin = pin.value;
     history.replace("/");
     location.reload();
   };
@@ -44,6 +46,12 @@ export default function Settings() {
         fullWidth={true}
         placeholder="d1pzlh6wq0egn8.cloudfront.net"
         {...node}
+      />
+      <TextField
+        label="PIN"
+        fullWidth={true}
+        placeholder="この値はブラウザ内に保存されます。共有PCでのご利用時はご注意ください。"
+        {...pin}
       />
       <Button
         variant="contained"

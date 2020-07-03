@@ -64,7 +64,7 @@ export default function Send() {
         autoDismiss: true
       });
       const sig = (await currentCard.computeSig(
-        "1919",
+        localStorage.pin as string,
         hash.slice(2)
       )) as number[];
       const submittable = api.tx.mynaChainModule.go({
