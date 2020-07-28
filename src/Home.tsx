@@ -8,7 +8,7 @@ import {
   ListItemText,
   Divider,
   ListSubheader,
-  Container
+  Container,
 } from "@material-ui/core";
 import CardIcon from "@material-ui/icons/CreditCard";
 import { useApi } from "./Api";
@@ -29,13 +29,13 @@ export default function Home() {
         `Successfully opened reader ${r.name} as descriptor ${card.fd}!`,
         {
           appearance: "success",
-          autoDismiss: true
+          autoDismiss: true,
         }
       );
     } catch (e) {
       addToast(`Opening reader failed: ${e.toString()}`, {
         appearance: "error",
-        autoDismiss: true
+        autoDismiss: true,
       });
     }
   };
@@ -45,31 +45,31 @@ export default function Home() {
       console.log(result);
       addToast(`Please see console`, {
         appearance: "success",
-        autoDismiss: true
+        autoDismiss: true,
       });
     } catch (e) {
       addToast(`Error occured: ${e.toString()}`, {
         appearance: "error",
-        autoDismiss: true
+        autoDismiss: true,
       });
     }
   };
   useEffect(() => {
     getReaders().then(
-      r => {
+      (r) => {
         setReaders(r);
       },
-      e => {
+      (e) => {
         addToast(`Daemon is not started.`, {
           appearance: "error",
-          autoDismiss: true
+          autoDismiss: true,
         });
       }
     );
   }, []);
   return (
     <Container>
-      <h1>マイナンバーチェーン</h1>
+      <h1>Levia</h1>
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
@@ -77,7 +77,7 @@ export default function Home() {
           </ListSubheader>
         }
       >
-        {readers.map(r => (
+        {readers.map((r) => (
           <ListItem
             button
             key={r.name}

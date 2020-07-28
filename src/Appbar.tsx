@@ -4,7 +4,7 @@ import {
   Toolbar,
   Typography,
   InputBase,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
@@ -17,11 +17,11 @@ const useStyles = makeStyles({
     margin: "12px",
     borderRadius: "5px",
     position: "relative",
-    display: "flex"
+    display: "flex",
   },
   input: {
     color: "white",
-    marginLeft: "40px"
+    marginLeft: "40px",
   },
   icon: {
     pointerEvents: "none",
@@ -30,11 +30,11 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    marginLeft: "10px"
+    marginLeft: "10px",
   },
   grow: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 export default function Appbar() {
   const classes = useStyles();
@@ -56,7 +56,7 @@ export default function Appbar() {
             history.push("/");
           }}
         >
-          マイナチェーン
+          Levia{" "}
         </Typography>
         <div className={classes.grow} />
 
@@ -67,7 +67,7 @@ export default function Appbar() {
             </div>
             <InputBase
               className={classes.input}
-              onChange={e => {
+              onChange={(e) => {
                 setId(parseInt(e.target.value));
               }}
               id="standard-basic"
