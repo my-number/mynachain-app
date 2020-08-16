@@ -15,7 +15,7 @@ const ApiContext = React.createContext({} as ApiProps);
 
 export { api };
 export default function Api({
-  children
+  children,
 }: Props): React.ReactElement<Props> | null {
   const [isReady, setIsReady] = useState(false);
   const [isApiConnected, setIsApiConnected] = useState(false);
@@ -32,13 +32,13 @@ export default function Api({
         "types::Account": {
           cert: "Vec<u8>",
           id: "types::AccountId",
-          nonce: "u64"
+          nonce: "u64",
         },
         "types::Balance": "u64",
         "types::SignedData": {
           tbs: "Tx",
           signature: "types::Signature",
-          id: "types::AccountId"
+          id: "types::AccountId",
         },
         "types::Signature": "Vec<u8>",
         Tx: {
@@ -46,24 +46,24 @@ export default function Api({
             CreateAccount: "TxCreateAccount",
             Send: "TxSend",
             Mint: "TxMint",
-            Other: null
-          }
+            Other: null,
+          },
         },
         TxCreateAccount: {
           cert: "Vec<u8>",
-          nonce: "uNonce"
+          nonce: "uNonce",
         },
         TxSend: {
           to: "types::AccountId",
           amount: "types::Balance",
-          nonce: "uNonce"
+          nonce: "uNonce",
         },
         TxMint: {
           amount: "types::Balance",
-          nonce: "uNonce"
+          nonce: "uNonce",
         },
-        uNonce: "u64"
-      }
+        uNonce: "u64",
+      },
     });
 
     api.on("connected", (): void => setIsApiConnected(true));
