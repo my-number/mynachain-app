@@ -46,23 +46,28 @@ export default function Api({
             CreateAccount: "TxCreateAccount",
             Send: "TxSend",
             Mint: "TxMint",
+            Vote: "TxVote",
             Other: null,
           },
         },
         TxCreateAccount: {
           cert: "Vec<u8>",
-          nonce: "uNonce",
+          nonce: "Nonce",
         },
         TxSend: {
           to: "types::AccountId",
           amount: "types::Balance",
-          nonce: "uNonce",
+          nonce: "Nonce",
         },
         TxMint: {
           amount: "types::Balance",
-          nonce: "uNonce",
+          nonce: "Nonce",
         },
-        uNonce: "u64",
+        TxVote: {
+          amount: "types::Balance",
+          nonce: "Nonce",
+        },
+        Nonce: "u64",
       },
     });
 
