@@ -15,7 +15,7 @@
     "@types/react-dom": "^16.9.5",
     "@types/react-toast-notifications": "^2.4.0",
     "axios": "^0.19.2",
-    "mynaconnect-lib": "file:../connect-lib",
+    "mynaconnect-lib": "git+https://github.com/my-number/connect-lib.git",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
