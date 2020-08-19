@@ -9267,7 +9267,7 @@
       "integrity": "sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA=="
     },
     "mynaconnect-lib": {
-      "version": "git+https://github.com/my-number/connect-lib.git#5239f4339167b1775e168bdcfd53277c1b225e50",
+      "version": "git+https://github.com/my-number/connect-lib.git#8deccf1c8ede4c555fc278dc04916dc7daeb0d90",
       "from": "git+https://github.com/my-number/connect-lib.git"
     },
     "nan": {

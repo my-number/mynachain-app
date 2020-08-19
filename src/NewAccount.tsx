@@ -30,16 +30,22 @@ export default function NewAccount() {
   const { root, backdrop } = useStyles();
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
-
-  const send = async () => {
+  const [hash, setHash] = useState("");
+  const [cert, setCert] = useState<number[]>([]);
+  const getHash = async () => {
     setLoading(true);
     try {
       addToast("Retrieving a certificate", {
         appearance: "info",
         autoDismiss: true,
       });
-      const cert = ((await getAuthCert("Levia - 証明書取得")) as any)
+      const _cert = ((await getAuthCert("Levia - 証明書取得")) as any)
         .cert as number[];
+      if (!_cert || cert.length == 0) {
+        setLoading(false);
+        return;
+      }
+      setCert(_cert);
       const forHash: any = api.tx.mynaChainModule.go({
         signature: "0x00",
         id: 0,
@@ -51,7 +57,18 @@ export default function NewAccount() {
         },
       });
 
-      let hash = forHash.args[0]["tbs"].hash.toHex();
+      setHash(forHash.args[0]["tbs"].hash.toHex());
+    } catch (e) {
+      addToast(e.toString(), {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
+    setLoading(false);
+  };
+  const send = async () => {
+    try {
+      setLoading(true);
       addToast("Computing a signature", {
         appearance: "info",
         autoDismiss: true,
@@ -102,10 +119,22 @@ export default function NewAccount() {
           variant="contained"
           color="primary"
           fullWidth={true}
-          onClick={send}
+          onClick={getHash}
+          disabled={!!hash}
         >
-          アカウント作成
+          アカウント情報取得
         </Button>
+
+        {hash && (
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth={true}
+            onClick={send}
+          >
+            アカウント作成
+          </Button>
+        )}
       </Container>
       <Backdrop className={backdrop} open={loading}>
         <CircularProgress color="inherit" />
