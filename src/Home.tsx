@@ -25,6 +25,9 @@ export default function Home() {
         <ListItem button onClick={() => history.push("/Send")}>
           送金
         </ListItem>
+        <ListItem button onClick={() => history.push("/vote")}>
+          投票
+        </ListItem>
       </List>
     </Container>
   );

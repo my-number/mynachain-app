@@ -4,6 +4,7 @@ import Home from "./Home";
 import NewAccount from "./NewAccount";
 import Mint from "./Mint";
 import Send from "./Send";
+import Vote from "./Vote";
 import Detail from "./Detail";
 import Settings from "./Settings";
 import Appbar from "./Appbar";
@@ -27,6 +28,7 @@ export default function Router() {
           <ReadyRoute path="/newAccount" component={NewAccount} />
           <ReadyRoute path="/mint" component={Mint} />
           <ReadyRoute path="/send" component={Send} />
+          <ReadyRoute path="/vote" component={Vote} />
           <ReadyRoute path="/detail/:id" component={Detail} />
           <Route path="/settings" component={Settings} />
         </Switch>
