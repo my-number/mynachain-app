@@ -10,7 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Keyring } from "@polkadot/api";
 import { useToasts } from "react-toast-notifications";
 
-import { getAuthCert, signWithAuth } from "mynaconnect-lib";
+import { signWithAuth } from "mynaconnect-lib";
+import GetAccountId from "./GetAccountId";
 
 const keyring = new Keyring({ type: "sr25519" });
 const useStyles = makeStyles({
@@ -28,6 +29,17 @@ export default function Vote() {
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
+  const useHashInput = (initial: string) => {
+    const [value, set] = useState(initial);
+    let isHash = /^0x[0-9a-fA-F]{64}$/.test(value.toString());
+
+    return {
+      value,
+      onChange: (e: any) => set(e.target.value),
+      error: !isHash,
+      set,
+    };
+  };
   const useIntInput = (initial: number) => {
     const [value, set] = useState(initial);
     let isNumber = /^[0-9]*$/.test(value.toString());
@@ -35,15 +47,16 @@ export default function Vote() {
     return {
       value,
       onChange: (e: any) => set(e.target.value),
+      set,
       error: !isNumber,
     };
   };
 
-  const from = useIntInput(0);
+  const from = useHashInput("");
   const amount = useIntInput(0);
   const [log, setLog] = useState("");
   const [hash, setHash] = useState("");
-
+  const [votedSum, setVotedSum] = useState(0);
   const send = async () => {
     setLoading(true);
     try {
@@ -102,14 +115,33 @@ export default function Vote() {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    api.query.mynaChainModule.votedSum().then((res: any) => {
+      setVotedSum(res.toNumber());
+    });
+  }, []);
+  useEffect(() => {
+    let unsubFn: () => void;
+    api.query.mynaChainModule
+      .votedSum((res: any) => {
+        setVotedSum(res.toNumber());
+      })
+      .then((uns) => {
+        unsubFn = uns;
+      });
+    return () => unsubFn && unsubFn();
+  }, []);
   return (
     <Container maxWidth="sm" className={root}>
+      <p>現在溜まってる投票の値は {votedSum} です。</p>
       <TextField
         label="あなたのアカウント番号"
         fullWidth={true}
         placeholder="整数"
         {...from}
       />
+
+      <GetAccountId onLoad={(data: string) => from.set(data)} />
       <TextField
         label="投票数量"
         fullWidth={true}

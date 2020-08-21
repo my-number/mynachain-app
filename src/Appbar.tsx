@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 export default function Appbar() {
   const classes = useStyles();
   const history = useHistory();
-  const [id, setId] = useState(0);
+  const [id, setId] = useState("");
 
   const { isReady } = useApi();
   const search = (e: any) => {
@@ -68,7 +68,7 @@ export default function Appbar() {
             <InputBase
               className={classes.input}
               onChange={(e) => {
-                setId(parseInt(e.target.value));
+                setId(e.target.value);
               }}
               id="standard-basic"
               placeholder="アカウントIDで検索"

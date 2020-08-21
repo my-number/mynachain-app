@@ -52,7 +52,7 @@ export default function NewAccount() {
         id: ARRAY_32,
         tbs: {
           CreateAccount: {
-            cert: i2h(cert),
+            cert: i2h(_cert),
             nonce: 0,
           },
         },
