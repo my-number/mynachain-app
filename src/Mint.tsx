@@ -10,7 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Keyring } from "@polkadot/api";
 import { useToasts } from "react-toast-notifications";
 
-import { getAuthCert, signWithAuth } from "mynaconnect-lib";
+import { signWithAuth } from "mynaconnect-lib";
+import GetAccountId from "./GetAccountId";
 
 const keyring = new Keyring({ type: "sr25519" });
 const useStyles = makeStyles({
@@ -28,6 +29,17 @@ export default function Mint() {
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
+  const useHashInput = (initial: string) => {
+    const [value, set] = useState(initial);
+    let isHash = /^0x[0-9a-fA-F]{64}$/.test(value.toString());
+
+    return {
+      value,
+      onChange: (e: any) => set(e.target.value),
+      set,
+      error: !isHash,
+    };
+  };
   const useIntInput = (initial: number) => {
     const [value, set] = useState(initial);
     let isNumber = /^[0-9]*$/.test(value.toString());
@@ -35,11 +47,12 @@ export default function Mint() {
     return {
       value,
       onChange: (e: any) => set(e.target.value),
+      set,
       error: !isNumber,
     };
   };
 
-  const from = useIntInput(0);
+  const from = useHashInput("");
   const amount = useIntInput(0);
   const [log, setLog] = useState("");
   const [hash, setHash] = useState("");
@@ -110,6 +123,7 @@ export default function Mint() {
         placeholder="整数"
         {...from}
       />
+      <GetAccountId onLoad={(data: string) => from.set(data)} />
       <TextField
         label="発行数量"
         fullWidth={true}

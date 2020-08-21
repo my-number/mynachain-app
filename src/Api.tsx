@@ -28,7 +28,7 @@ export default function Api({
     api = new ApiPromise({
       provider,
       types: {
-        "types::AccountId": "u64",
+        "types::AccountId": "H256",
         "types::Account": {
           cert: "Vec<u8>",
           id: "types::AccountId",
