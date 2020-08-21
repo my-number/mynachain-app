@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ZERO_ARRAY_32 = "0x" + "0".repeat(64);
+const ARRAY_32 = "0x" + "1".repeat(64);
 const i2h = (il: number[]) =>
   "0x" + il.map((i) => ("0" + i.toString(16)).slice(-2)).join("");
 export default function NewAccount() {
@@ -42,14 +42,14 @@ export default function NewAccount() {
       });
       const _cert = ((await getAuthCert("Levia - 証明書取得")) as any)
         .cert as number[];
-      if (!_cert || cert.length == 0) {
+      if (!_cert || _cert.length == 0) {
         setLoading(false);
         return;
       }
       setCert(_cert);
       const forHash: any = api.tx.mynaChainModule.go({
         signature: "0x00",
-        id: ZERO_ARRAY_32,
+        id: ARRAY_32,
         tbs: {
           CreateAccount: {
             cert: i2h(cert),
@@ -57,6 +57,7 @@ export default function NewAccount() {
           },
         },
       });
+      debugger;
 
       setHash(forHash.args[0]["tbs"].hash.toHex());
     } catch (e) {
@@ -80,7 +81,7 @@ export default function NewAccount() {
       )) as any).sig as number[];
       const submittable = api.tx.mynaChainModule.go({
         signature: i2h(sig),
-        id: ZERO_ARRAY_32,
+        id: ARRAY_32,
         tbs: {
           CreateAccount: {
             cert: i2h(cert),
