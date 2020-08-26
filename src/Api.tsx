@@ -23,7 +23,7 @@ export default function Api({
 
   useEffect((): void => {
     const provider = new WsProvider(
-      localStorage.destination || "wss://d1pzlh6wq0egn8.cloudfront.net"
+      localStorage.destination || "wss://mynachain.herokuapp.com"
     );
     api = new ApiPromise({
       provider,
@@ -33,8 +33,9 @@ export default function Api({
           cert: "Vec<u8>",
           id: "types::AccountId",
           nonce: "u64",
+          data: "Vec<u8>",
         },
-        "types::Balance": "u64",
+        "types::Balance": "i128",
         "types::SignedData": {
           tbs: "Tx",
           signature: "types::Signature",
@@ -47,6 +48,7 @@ export default function Api({
             Send: "TxSend",
             Mint: "TxMint",
             Vote: "TxVote",
+            Write: "TxWrite",
             Other: null,
           },
         },
@@ -65,6 +67,10 @@ export default function Api({
         },
         TxVote: {
           amount: "types::Balance",
+          nonce: "Nonce",
+        },
+        TxWrite: {
+          data: "Vec<u8>",
           nonce: "Nonce",
         },
         Nonce: "u64",

@@ -38,7 +38,7 @@ export default function Settings() {
       <TextField
         label="ノード接続先"
         fullWidth={true}
-        placeholder="d1pzlh6wq0egn8.cloudfront.net"
+        placeholder="wss://mynachain.herokuapp.com"
         {...node}
       />
       <Button

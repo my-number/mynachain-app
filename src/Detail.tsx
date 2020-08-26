@@ -7,9 +7,9 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 const useStyles = makeStyles({
   root: {
     "& > *": {
-      margin: "10px"
-    }
-  }
+      margin: "10px",
+    },
+  },
 });
 
 export default function Detail() {
@@ -19,13 +19,15 @@ export default function Detail() {
   const [balance, setBalance] = useState<number | null>(null);
   const [nonce, setNonce] = useState<number | null>(null);
   const [cert, setCert] = useState<string>("Not loaded");
+  const [data, setData] = useState<string>("No data");
   useEffect(() => {
-    api.query.mynaChainModule.balance(id).then((res: any) => {
+    api.query.mynaChainModule.rawBalance(id).then((res: any) => {
       setBalance(res.toNumber());
     });
     api.query.mynaChainModule.accounts(id).then((res: any) => {
       setNonce(res.nonce.toNumber());
       setCert(res.cert.toHex());
+      setData(res.data.toHex());
     });
   }, [id]);
   const x509 = () => {
@@ -55,6 +57,15 @@ export default function Detail() {
       >
         証明書の中身を確認する
       </Button>
+      <TextField
+        label="データ"
+        multiline
+        rows="6"
+        disabled
+        variant="filled"
+        fullWidth
+        value={data}
+      />
     </Container>
   );
 }

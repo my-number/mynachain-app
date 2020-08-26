@@ -57,6 +57,9 @@ export default function Vote() {
   const [log, setLog] = useState("");
   const [hash, setHash] = useState("");
   const [votedSum, setVotedSum] = useState(0);
+  const termInput = useIntInput(0);
+  const termNumber = termInput.value;
+
   const send = async () => {
     setLoading(true);
     try {
@@ -116,24 +119,20 @@ export default function Vote() {
     }
   };
   useEffect(() => {
-    api.query.mynaChainModule.votedSum().then((res: any) => {
+    api.query.mynaChainModule.cumulativeVotes(termNumber).then((res: any) => {
       setVotedSum(res.toNumber());
     });
-  }, []);
-  useEffect(() => {
-    let unsubFn: () => void;
-    api.query.mynaChainModule
-      .votedSum((res: any) => {
-        setVotedSum(res.toNumber());
-      })
-      .then((uns) => {
-        unsubFn = uns;
-      });
-    return () => unsubFn && unsubFn();
-  }, []);
+  }, [termNumber]);
+
   return (
     <Container maxWidth="sm" className={root}>
-      <p>現在溜まってる投票の値は {votedSum} です。</p>
+      <TextField
+        label="CumulativeVotes[i]"
+        fullWidth={true}
+        placeholder="整数"
+        {...termInput}
+      />
+      <p>CumulativeVotes[termNumber] = {votedSum} </p>
       <TextField
         label="あなたのアカウント番号"
         fullWidth={true}
