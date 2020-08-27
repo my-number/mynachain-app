@@ -37,8 +37,7 @@ export default function Detail() {
     <Container maxWidth="sm" className={root}>
       <h1>Account ID: {id}</h1>
       <p>
-        アカウント{id}が所有する金額:{" "}
-        {balance + " マイナコイン" || "not loaded"}
+        RawBalance({id}): {balance + " マイナコイン" || "not loaded"}
       </p>
       <TextField
         label="証明書"

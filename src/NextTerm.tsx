@@ -51,15 +51,7 @@ export default function Vote() {
       error: !isNumber,
     };
   };
-
   const from = useHashInput("");
-  const amount = useIntInput(0);
-  const [log, setLog] = useState("");
-  const [hash, setHash] = useState("");
-  const [votedSum, setVotedSum] = useState(0);
-  const termInput = useIntInput(0);
-  const termNumber = termInput.value;
-
   const send = async () => {
     setLoading(true);
     try {
@@ -67,8 +59,7 @@ export default function Vote() {
         signature: "0x00",
         id: from.value,
         tbs: {
-          Vote: {
-            amount: amount.value,
+          NextTerm: {
             nonce: 0,
           },
         },
@@ -87,8 +78,7 @@ export default function Vote() {
         signature: i2h(sig),
         id: from.value,
         tbs: {
-          Vote: {
-            amount: amount.value,
+          NextTerm: {
             nonce: 0,
           },
         },
@@ -118,23 +108,9 @@ export default function Vote() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    api.query.mynaChainModule.cumulativeVotes(termNumber).then((res: any) => {
-      setVotedSum(res.toNumber());
-    });
-  }, [termNumber]);
 
   return (
     <Container maxWidth="sm" className={root}>
-      <TextField
-        label="CumulativeVotes[i]"
-        fullWidth={true}
-        placeholder="整数"
-        {...termInput}
-      />
-      <p>
-        CumulativeVotes[{termNumber}] = {votedSum}
-      </p>
       <TextField
         label="あなたのアカウント番号"
         fullWidth={true}
@@ -143,23 +119,12 @@ export default function Vote() {
       />
 
       <GetAccountId onLoad={(data: string) => from.set(data)} />
-      <TextField
-        label="投票数量"
-        fullWidth={true}
-        placeholder="整数"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">マイナコイン</InputAdornment>
-          ),
-        }}
-        {...amount}
-      />
       <Button
         variant="contained"
         color="primary"
         fullWidth={true}
         onClick={send}
-        disabled={from.error || amount.error}
+        disabled={from.error}
       >
         投票
       </Button>

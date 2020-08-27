@@ -34,8 +34,10 @@ export default function Api({
           id: "types::AccountId",
           nonce: "u64",
           data: "Vec<u8>",
+          created_at: "types::TermNumber",
         },
         "types::Balance": "i128",
+        "types::TermNumber": "u32",
         "types::SignedData": {
           tbs: "Tx",
           signature: "types::Signature",
@@ -49,6 +51,7 @@ export default function Api({
             Mint: "TxMint",
             Vote: "TxVote",
             Write: "TxWrite",
+            NextTerm: "TxNextTerm",
             Other: null,
           },
         },
@@ -71,6 +74,9 @@ export default function Api({
         },
         TxWrite: {
           data: "Vec<u8>",
+          nonce: "Nonce",
+        },
+        TxNextTerm: {
           nonce: "Nonce",
         },
         Nonce: "u64",
