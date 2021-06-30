@@ -56,7 +56,7 @@ export default function Appbar() {
             history.push("/");
           }}
         >
-          Levia{" "}
+          MTX
         </Typography>
         <div className={classes.grow} />
 
