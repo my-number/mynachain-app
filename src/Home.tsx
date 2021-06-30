@@ -7,7 +7,7 @@ export default function Home() {
   const history = useHistory();
   return (
     <Container>
-      <h1>Levia</h1>
+      <h1>MTX</h1>
 
       <List
         subheader={
